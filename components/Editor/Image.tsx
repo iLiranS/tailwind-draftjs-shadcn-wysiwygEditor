@@ -1,4 +1,5 @@
-import {ContentState,CompositeDecorator,ContentBlock, EntityInstance} from 'draft-js'
+import {ContentState,ContentBlock, DraftDecorator} from 'draft-js'
+import React from 'react';
 
 
 interface ImageProps {
@@ -8,7 +9,7 @@ interface ImageProps {
 }
 
 
-export const Img = ({ entityKey, contentState,children }:ImageProps) => {
+export const Img:React.FC<ImageProps> = ({ entityKey, contentState,children }) => {
     const { url, alt } = contentState.getEntity(entityKey).getData();
 
     return (<div className='overflow-hidden mx-auto relative w-fit max-w-full RTEImageContainer'>
@@ -28,6 +29,9 @@ export const findImageEntities = (contentBlock:ContentBlock, callback:(start: nu
     callback
     );
 }
+// vercel deployment typesafe error solution
+interface CustomDraftDecorator extends DraftDecorator<ImageProps> {
+    component:any;
+}
 
-
-export const testImage = {strategy:findImageEntities,component:Img}
+export const testImage:CustomDraftDecorator = {strategy:findImageEntities,component:Img}
