@@ -61,6 +61,15 @@ const page = () => {
 #### How to style the rendered content ?
 you can see my files as example, you can style it as you wish.
 
+#### How to give initial content ?
+To give initial content for the editor, you need to give it `RawDraftContentState`. here is an example :
+```javascript
+// initialPost.data  is a stringified json saved in the database.
+initialRawDraftState = JSON.parse(initialPost.data) as RawDraftContentState;
+// ... in return
+<RTEditor initialEditorState={initialRawDraftState} ref={EditorRef} setContent={setContentHandler}/>
+```
+
 ## License
 
 Feel free to use and customize it as you wish.

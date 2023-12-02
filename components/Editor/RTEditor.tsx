@@ -24,11 +24,11 @@ import { useToast } from '../ui/use-toast'
 
 
 // requires update function.
-// initial state is for updating existing state. (for example editing post => give this component raw state of content)
+// initial state is for updating existing state. (for example editing post => give this component raw draft of content)
 // ref -> used for focusing issue, MUST have.
 type Props =  {
   setContent: (state: RawDraftContentState) => void,
-  initialEditorState?:EditorState
+  initialEditorState?:RawDraftContentState | null
 }
 
 const emptyContentState =convertFromRaw({
@@ -49,7 +49,7 @@ const emptyContentState =convertFromRaw({
 
 
 const RTEditor = React.forwardRef(({ setContent,initialEditorState,}: Props,ref:React.ForwardedRef<Editor>) => {
-  const [editorState, setEditorState] = useState(initialEditorState ?? EditorState.createWithContent(emptyContentState,combinedDecorator))
+  const [editorState, setEditorState] = useState(initialEditorState ? EditorState.createWithContent(convertFromRaw(initialEditorState),combinedDecorator)  :EditorState.createWithContent(emptyContentState,combinedDecorator))
   const {toast} = useToast();
 
   const toastNotify = (title:string,description:string,variant:'default'|'destructive') =>{
