@@ -70,6 +70,8 @@ initialRawDraftState = JSON.parse(initialPost.data) as RawDraftContentState;
 <RTEditor initialEditorState={initialRawDraftState} ref={EditorRef} setContent={setContentHandler}/>
 ```
 
+
+
 ## License
 
 Feel free to use and customize it as you wish.

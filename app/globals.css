@@ -78,20 +78,45 @@
 @layer components{
 
   /* RTEdior styles */
+ 
+
   .RichEditor-default , .data > p{
-    @apply  text-base;
+    @apply  text-base leading-relaxed my-2;
 }
 
   .RichEditor-blockquote, .data blockquote{
-    @apply text-gray-600/80 dark:text-gray-400/80 bg-gray-400/20 dark:bg-gray-400/10 font-serif italic  border-l-2 border-gray-400/80 px-1 py-3;
+    @apply text-gray-600/80 dark:text-gray-400/80 bg-gray-400/20 dark:bg-gray-400/10 font-serif italic border-l-[3px] border-gray-400/80 px-1 py-3 pl-2 my-3;
   }
-  .RichEditor-codeblock , .data pre{
-    @apply p-2 text-sm bg-popover-foreground/90 text-popover ;
+  .RichEditor-codeblock, .data pre{
+    @apply p-2 text-sm bg-popover-foreground/90  text-popover/80 font-mono overflow-x-auto;
   }
-  div .RichEditor-codeblock, .data pre{
-    @apply first:rounded-t-md last:rounded-b-md first:mt-3 last:mb-3;
+  .RichEditor-codeblock div{
+    @apply whitespace-nowrap;
+  }
+  /* codeblocks rounded corners */
+
+  /* first in each sequence */
+  .RichEditor-codeblock:has( + .RichEditor-codeblock) , *:not(.RichEditor-codeblock) > .RichEditor-codeblock:first-of-type
+  ,.data pre:has(+ pre), .data pre:first-of-type
+  {
+    @apply rounded-t-md;
+  }
+  /* last of each sequence */
+  .RichEditor-codeblock:not(:has(+ .RichEditor-codeblock))
+  , .data pre:not(:has(+ pre))
+  {
+    @apply rounded-b-md;
+  }
+  /* disable rounded in between  */
+  .RichEditor-codeblock + .RichEditor-codeblock:has(+ .RichEditor-codeblock)
+  , .data pre + pre:has(+ pre)
+  {
+    @apply rounded-none;
   }
 
+  .data p{
+    @apply min-h-[1.625rem];
+  }
 
   .RichEditor-h1 , .data h1{
     @apply text-4xl font-bold my-2;
@@ -109,7 +134,6 @@
   } 
   .RichEditor-h5 , .data h5{
     @apply text-lg font-bold my-2;
-    
   }
   .RichEditor-h6 , .data h6{
     @apply text-base font-bold my-2; 
@@ -122,7 +146,14 @@
   .data ol{
     @apply list-inside list-decimal;
   }
-  .data ol  ol, .richE{
+  .data ol li::before{
+    content: counter(li);
+    height: 100%;
+    width: 1rem;
+    opacity: 0;
+  }
+
+  .data ol  ol{
     @apply ml-7;
   }
   /* LISTS STYLES */
@@ -144,14 +175,10 @@
   .data ul{
     @apply list-inside list-disc
   }
-
   .data a , .a_link{
     @apply underline  text-violet-500 cursor-pointer;
   }
-  .data{
-    @apply leading-relaxed;
-  }
-  .data *{
+  .data *:not(pre){ /* pre should be without space for background consistancy */
     @apply my-2;
   }
   .RTEImageContainer{
@@ -160,5 +187,23 @@
   .maxHeightSize{
     @apply max-h-[500px]
   }
- 
+  /* data image pos fix */
+  .data img{
+    @apply mx-auto;
+  }
+  /*  custom codeblock scroll bar styles */
+  .RichEditor-codeblock::-webkit-scrollbar-thumb, .data pre::-webkit-scrollbar-thumb {
+      @apply bg-violet-400/75 max-h-2  rounded-md hover:bg-violet-400;
+    }
+  .RichEditor-codeblock::-webkit-scrollbar, .data pre::-webkit-scrollbar {
+    @apply w-4 max-h-3;
+  }
+.RichEditor-codeblock::-webkit-scrollbar-track, .data pre::-webkit-scrollbar-track {
+  @apply bg-background/20 rounded-md
+}
+
+
+  
+
+
 }

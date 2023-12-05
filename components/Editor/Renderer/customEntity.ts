@@ -1,4 +1,5 @@
 import { DraftEntityMutability, DraftEntityType } from "draft-js";
+import React from "react";
 
 
 type DraftEntity = {
@@ -7,16 +8,14 @@ type DraftEntity = {
     data: any;
 };
 
-export const customEntityTransform = (entity: DraftEntity, text: string):string | undefined => {
+export const customEntityTransform = (entity: DraftEntity, text: string):string | undefined | React.ReactNode => {
     if (entity.type === 'IMG')
     return(
-    `<div class='overflow-hidden mx-auto relative w-fit max-w-full RTEImageContainer'>
-        <img class='w-auto max-w-full rounded-md maxHeightSize' src='${entity.data.url}' alt='${text}' />
-        <section class='absolute bottom-2 right-2 bg-background text-foreground p-1 rounded-md text-sm opacity-80'>
-            ${text}
-        </section>
+    `<div className='relative w-full aspect-video RTEImageContainer grid place-items-center bg-red-200'>
+        <img className='w-auto max-w-full' loading='lazy' src=${entity.data.url} alt=${entity.data.url}/>
     </div>`
     )
   // LINK
     if (entity.type === 'LINK') return `<a title=${entity.data.url} href="${entity.data.url}" target="_blank" rel="noopener noreferrer">${text}</a>`
 };
+

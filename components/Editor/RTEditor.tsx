@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
     
 import {
   EditorState,
@@ -103,7 +103,7 @@ const RTEditor = React.forwardRef(({ setContent,initialEditorState,}: Props,ref:
       case 'blockquote':
         return 'RichEditor-blockquote'
   
-      case 'code-block':
+      case 'code':
         return 'RichEditor-codeblock'
       
       case 'header-one':
@@ -124,11 +124,7 @@ const RTEditor = React.forwardRef(({ setContent,initialEditorState,}: Props,ref:
       case 'header-six':
         return 'RichEditor-h6'
       
-      case 'ordered-list-item':
-        return 'RichEditor-ol'
-        
-      case 'unordered-list-item':
-        return 'RichEditor-li'
+
       
       
   
