@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
     
 import {
   EditorState,
@@ -11,10 +11,10 @@ import {
   convertToRaw,
   RawDraftContentState,
   Modifier,
-  Editor,
-  SelectionState,
+  Editor
 } from 'draft-js'
 import 'draft-js/dist/Draft.css'
+
 
 import BlockStyleControls from './BlockStyleControls'
 import InlineStyleControls from './InlineStyleControls'
@@ -46,10 +46,11 @@ const emptyContentState =convertFromRaw({
 });
 
 
-
+//initialEditorState ? EditorState.createWithContent(convertFromRaw(initialEditorState),combinedDecorator)  :EditorState.createWithContent(emptyContentState,combinedDecorator)
 
 const RTEditor = React.forwardRef(({ setContent,initialEditorState,}: Props,ref:React.ForwardedRef<Editor>) => {
-  const [editorState, setEditorState] = useState(initialEditorState ? EditorState.createWithContent(convertFromRaw(initialEditorState),combinedDecorator)  :EditorState.createWithContent(emptyContentState,combinedDecorator))
+  const [editorState, setEditorState] = useState(initialEditorState ? EditorState.createWithContent(convertFromRaw(initialEditorState),combinedDecorator)  :EditorState.createWithContent(emptyContentState,combinedDecorator));
+
   const {toast} = useToast();
 
   const toastNotify = (title:string,description:string,variant:'default'|'destructive') =>{
@@ -57,10 +58,12 @@ const RTEditor = React.forwardRef(({ setContent,initialEditorState,}: Props,ref:
   }
 
   const onChange = (state: EditorState) => {
+    const rawData = convertToRaw(state.getCurrentContent());
     setEditorState(state);
-    const rawData = convertToRaw(editorState.getCurrentContent());
-    setContent(rawData)
+    setContent(rawData);
   }
+
+
 
   const mapKeyToEditorCommand = (e: any): string | null => {
     if (e.keyCode === 9 /* TAB */) {
@@ -89,15 +92,13 @@ const RTEditor = React.forwardRef(({ setContent,initialEditorState,}: Props,ref:
   }
 
   const toggleBlockType = (blockType: string) => {
-    onChange(RichUtils.toggleBlockType(editorState, blockType))
+    onChange(RichUtils.toggleBlockType(editorState,blockType))
   }
 
   const toggleInlineStyle = (inlineStyle: string) => {
     onChange(RichUtils.toggleInlineStyle(editorState, inlineStyle))
-
   }
 
-  
   const getBlockStyle = (block: ContentBlock) => {
     switch (block.getType()) {
       case 'blockquote':
@@ -123,17 +124,11 @@ const RTEditor = React.forwardRef(({ setContent,initialEditorState,}: Props,ref:
   
       case 'header-six':
         return 'RichEditor-h6'
-      
 
-      
-      
-  
       default:
         return 'RichEditor-default'
     }
   }
-
-
 
   const deleteEntityIfExist = () =>{
     console.log('entity delete called');
@@ -161,6 +156,8 @@ const RTEditor = React.forwardRef(({ setContent,initialEditorState,}: Props,ref:
     // const withoutLink = RichUtils.toggleLink(newEditorState,selection,)
   }
 }
+
+
 
 const addEntitiy = (url:string,entitiyName:string) =>{
   const selection = editorState.getSelection();
@@ -206,13 +203,12 @@ const areKeysSelected = ():boolean =>{
   const selection = editorState.getSelection();
   if (selection.isCollapsed()) return false; // no selection
   return true;
-
 }
 
-
-  const otherStylesToggle = (action:string) =>{
+const otherStylesToggle = (action:string) =>{
     switch(action){
       case 'link':
+        
         if (!areKeysSelected()) { toastNotify('Link Error','Select Text to add link into!','destructive'); break;};
         const linkURL = getValidOrCanceledUrl();
         if (linkURL === 'empty') deleteEntityIfExist();
@@ -238,7 +234,7 @@ const areKeysSelected = ():boolean =>{
         else {}
         break;
     }
-  }
+}
 
   return (
     <div className='w-full max-w-2xl relative mx-auto h-full overflow-auto rounded-md flex flex-col gap-2'>
@@ -258,9 +254,10 @@ const areKeysSelected = ():boolean =>{
           onToggle={otherStylesToggle}
           />
         </ul>
+
       </ul>
 
-      <div className='rounded-md p-2 mx-auto w-full overflow-auto h-full'>
+      <div id='RTEditor' className='rounded-md p-2 mx-auto w-full overflow-auto h-full'>
         <Editor
           ref={ref}
           editorState={editorState}
@@ -268,9 +265,10 @@ const areKeysSelected = ():boolean =>{
           blockStyleFn={(block: ContentBlock) => getBlockStyle(block)}
           keyBindingFn={(e) => mapKeyToEditorCommand(e)}
           onChange={onChange}
-          spellCheck={true}
           handleKeyCommand={handleKeyCommand}
         />
+      </div>
+      <div className='absolute left-1/2 top-1/2 text-red-500'>
       </div>
     </div>
   )

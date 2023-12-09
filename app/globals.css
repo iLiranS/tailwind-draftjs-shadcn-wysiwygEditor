@@ -33,6 +33,9 @@
     --ring: 222.2 84% 4.9%;
  
     --radius: 0.5rem;
+
+
+
   }
  
   .dark {
@@ -64,6 +67,8 @@
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
   }
+
+  
 }
  
 @layer base {
@@ -87,16 +92,22 @@
   .RichEditor-blockquote, .data blockquote{
     @apply text-gray-600/80 dark:text-gray-400/80 bg-gray-400/20 dark:bg-gray-400/10 font-serif italic border-l-[3px] border-gray-400/80 px-1 py-3 pl-2 my-3;
   }
-  .RichEditor-codeblock, .data pre{
+  .RichEditor-codeblock ,.data pre{
     @apply p-2 text-sm bg-popover-foreground/90  text-popover/80 font-mono overflow-x-auto;
   }
+  /* data uses syntax highlight no need for some of editor */
+
+
+  
   .RichEditor-codeblock div{
     @apply whitespace-nowrap;
   }
   /* codeblocks rounded corners */
 
+ 
+
   /* first in each sequence */
-  .RichEditor-codeblock:has( + .RichEditor-codeblock) , *:not(.RichEditor-codeblock) > .RichEditor-codeblock:first-of-type
+  .RichEditor-codeblock:has( + .RichEditor-codeblock) , *:not(.RichEditor-codeblock) > .RichEditor-codeblock:first-of-type, *:not(.RichEditor-codeblock) + .RichEditor-codeblock
   ,.data pre:has(+ pre), .data pre:first-of-type
   {
     @apply rounded-t-md;
@@ -196,14 +207,21 @@
       @apply bg-violet-400/75 max-h-2  rounded-md hover:bg-violet-400;
     }
   .RichEditor-codeblock::-webkit-scrollbar, .data pre::-webkit-scrollbar {
-    @apply w-4 max-h-3;
+    @apply w-4 max-h-2;
   }
 .RichEditor-codeblock::-webkit-scrollbar-track, .data pre::-webkit-scrollbar-track {
   @apply bg-background/20 rounded-md
 }
-
+.RichEditor-default{
+  @apply select-text;
+}
 
   
 
+
+}
+.DraftEditor-root *, #RTEditor, #RTEditor * {
+  -webkit-user-select: text !important;
+  user-select: text !important;
 
 }

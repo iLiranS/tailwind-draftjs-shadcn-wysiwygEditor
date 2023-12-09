@@ -18,6 +18,8 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "draft-js": "^0.11.7",
+    "draft-js-multidecorators": "^1.0.0",
+    "draft-js-prism": "^1.0.6",
     "draftjs-to-html": "^0.9.1",
     "lucide-react": "^0.293.0",
     "next": "14.0.3",

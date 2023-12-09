@@ -1,14 +1,17 @@
 import { EditorState } from 'draft-js';
 import React from 'react'
 import { CiUndo,CiRedo,CiLink,CiImageOn  } from "react-icons/ci";
+
 import StylesControlHolder from './StylesControlHolder';
 import StyleButton from './StyleButton';
 
-const OTHER_STYLES = [
+type btnStyleProps= {label:any,style:string,title:string}
+
+const OTHER_STYLES:btnStyleProps[] = [
     { label: <CiUndo/>, style: 'undo', title:'Undo (Ctrl+Z)' },
     { label: <CiRedo/>, style: 'redo', title:'Redo (Ctrl+Y)' },
     { label: <CiLink/>, style: 'link', title:'add link' },
-    { label: <CiImageOn/>, style: 'image', title:'Image link' },
+    { label: <CiImageOn/>, style: 'image', title:'Image link'},
 ]
 
 type Props = {
