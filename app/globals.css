@@ -165,7 +165,7 @@
     @apply list-inside list-decimal;
   }
   /* markers opacity dim */
-  .data ol li::marker, .data ul li::marker, .RichEditor-default::marker{
+  .data ol li::marker, .data ul li::marker, .RichEditor-default::marker, .RichEditor-default::before{
     @apply text-foreground/60;
   }
 
@@ -231,7 +231,7 @@
 .RichEditor-default{
   @apply select-text;
 }
-.data code, .CODE{
+.data code{
   @apply bg-foreground/10 text-popover-foreground px-2 rounded-md opacity-70;
 }
 
