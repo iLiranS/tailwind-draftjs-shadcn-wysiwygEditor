@@ -4,7 +4,7 @@ import { Editor, RawDraftContentState } from 'draft-js';
 import RTEditor from '../Editor/RTEditor';
 import { Button } from '../ui/button';
 import { useToast } from '../ui/use-toast';
-import { dataToHTML, processHTMLString } from '../Editor/Renderer/customEntity';
+import { getContentHTML } from '../Editor/Renderer/rendererFunctions';
 
 const FormComponent = () => {
     const [content,setContent] = useState<RawDraftContentState>();
@@ -14,24 +14,28 @@ const FormComponent = () => {
       toast({title,description,variant})
     }
 
-
     const editorRef = useRef<Editor>(null);
 
+    // updates on each editor change
     const updateContentHandler = useCallback((newContent:RawDraftContentState) =>{
       setContent(newContent);
     },[])
 
+    // focus issues resolver
     useEffect(()=>{
       editorRef.current?.focus();
     },[content])
 
-    const saveToClipBoard=async()=>{
+    // get finalize content data to html string.
+    const getContent = () =>{
       if(!content) { toastNotify('Error','Enter some data first','destructive'); return};
-      console.log(JSON.stringify(content));
-      const dataHTML = dataToHTML(content); // convert data raw content to html elements string
-      const dataTransformedText = processHTMLString(dataHTML); // custom specific text to display as something else (like dividor line)
-      // const modifiedText = await modifyHTML(dataTransformedText); // 
-      navigator.clipboard.writeText(JSON.stringify(dataTransformedText)); 
+      const htmlContent = getContentHTML(content);
+      return htmlContent;
+    }
+
+    const saveToClipBoard=()=>{
+      const htmlString = getContent();
+      navigator.clipboard.writeText(JSON.stringify(htmlString)); 
       toastNotify('Success','Copied Text to clipboard','default');
     }
     

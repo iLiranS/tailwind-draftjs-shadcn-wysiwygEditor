@@ -22,15 +22,24 @@ import OtherStyleControls from './OtherStyleControls'
 import { combinedDecorator } from './decorators'
 import { useToast } from '../ui/use-toast'
 
+// render inline styles differently in editor.
+const styleMap = {
+  'CODE': {
+    fontFamily: 'monospace',
+    backgroundColor: 'hsl(var(--foreground) / 0.1)',
+    color: 'hsl(var(--popover-foreground))',
+    padding: '0 0.25rem',
+    borderRadius: 'calc(var(--radius) - 2px)',
+    opacity:'0.7'
+  },
+};
 
-// requires update function.
-// initial state is for updating existing state. (for example editing post => give this component raw draft of content)
-// ref -> used for focusing issue, MUST have.
+
 type Props =  {
   setContent: (state: RawDraftContentState) => void,
   initialEditorState?:RawDraftContentState | null
 }
-
+// for empty initialization
 const emptyContentState =convertFromRaw({
   entityMap: {},
   blocks: [
@@ -45,12 +54,8 @@ const emptyContentState =convertFromRaw({
   ],
 });
 
-
-//initialEditorState ? EditorState.createWithContent(convertFromRaw(initialEditorState),combinedDecorator)  :EditorState.createWithContent(emptyContentState,combinedDecorator)
-
 const RTEditor = React.forwardRef(({ setContent,initialEditorState,}: Props,ref:React.ForwardedRef<Editor>) => {
   const [editorState, setEditorState] = useState(initialEditorState ? EditorState.createWithContent(convertFromRaw(initialEditorState),combinedDecorator)  :EditorState.createWithContent(emptyContentState,combinedDecorator));
-
   const {toast} = useToast();
 
   const toastNotify = (title:string,description:string,variant:'default'|'destructive') =>{
@@ -62,8 +67,6 @@ const RTEditor = React.forwardRef(({ setContent,initialEditorState,}: Props,ref:
     setEditorState(state);
     setContent(rawData);
   }
-
-
 
   const mapKeyToEditorCommand = (e: any): string | null => {
     if (e.keyCode === 9 /* TAB */) {
@@ -96,7 +99,10 @@ const RTEditor = React.forwardRef(({ setContent,initialEditorState,}: Props,ref:
   }
 
   const toggleInlineStyle = (inlineStyle: string) => {
-    onChange(RichUtils.toggleInlineStyle(editorState, inlineStyle))
+    if (inlineStyle==='CODE'){
+      onChange(RichUtils.toggleInlineStyle(editorState,'CODE'));
+    }
+    else onChange(RichUtils.toggleInlineStyle(editorState, inlineStyle))
   }
 
   const getBlockStyle = (block: ContentBlock) => {
@@ -265,10 +271,9 @@ const otherStylesToggle = (action:string) =>{
           blockStyleFn={(block: ContentBlock) => getBlockStyle(block)}
           keyBindingFn={(e) => mapKeyToEditorCommand(e)}
           onChange={onChange}
+          customStyleMap={styleMap}
           handleKeyCommand={handleKeyCommand}
         />
-      </div>
-      <div className='absolute left-1/2 top-1/2 text-red-500'>
       </div>
     </div>
   )

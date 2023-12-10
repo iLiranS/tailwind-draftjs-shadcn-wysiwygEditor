@@ -21,7 +21,7 @@ const BLOCK_TYPES = [
   { label: <BsChatSquareQuote/>, style: 'blockquote' , title:'quote'},
   { label: <AiOutlineUnorderedList/>, style: 'unordered-list-item', title:'dot list' },
   { label: <AiOutlineOrderedList/>, style: 'ordered-list-item', title:'num list' },
-  { label: '</>', style: 'code', title:'code' },
+  { label: '<>', style: 'code', title:'code' },
 ]
 
 type Props = {

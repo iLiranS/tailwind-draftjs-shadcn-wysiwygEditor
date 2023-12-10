@@ -8,7 +8,7 @@ import StylesControlHolder from './StylesControlHolder'
         { label: 'B', style: 'BOLD', title:'Bold (Ctrl+B)' },
         { label: 'I', style: 'ITALIC', title:'Italic (Ctrl+I)' },
         { label: 'U', style: 'UNDERLINE', title:'Underline (Ctrl+U)' },
-        { label: 'M', style: 'CODE', title:'Monospace' },
+        { label: 'M', style: 'CODE', title:'Inline code' },
     ]
     
     type Props = {

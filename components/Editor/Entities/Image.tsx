@@ -15,8 +15,8 @@ export const Img:React.FC<ImageProps> = ({ entityKey, contentState,children }) =
     return (
         <div className=' relative w-full aspect-video RTEImageContainer'>
                 <img className='w-auto max-w-full mx-auto' loading='lazy' src={url} alt={url}/>
-                <section className='flex items-center gap-1 absolute bottom-2 right-2 bg-darkBG/75 dark:bg-lightBG/75 text-lightBG dark:text-darkBG text-foreground p-1 rounded-md text-sm opacity-80'>
-                    <p className='opacity-50'>Editor:</p> {children ?? ''}
+                <section className='flex items-center gap-1 absolute bottom-2 right-2 bg-codeBackground text-codeForeground p-1 rounded-md text-sm opacity-80'>
+                    <p className='opacity-75'>Editor:</p> {children ?? ''}
                 </section>
         </div>)
 }
